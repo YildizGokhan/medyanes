@@ -16,7 +16,6 @@ const ClassesList = () => {
         try {
             const data = await getAPI('/classes');
             setClasses(data || []);
-            console.log("Tüm Sınıflarımız", data);
         } catch (error) {
             console.error("Error fetching classes:", error);
         }
@@ -25,7 +24,6 @@ const ClassesList = () => {
     // Yeni sınıf ekleme işlemi
     const handleAddClass = async () => {
         try {
-            console.log("Güncel Sınıf Durumu:", newClass);
             await postAPI('/classes', {
                 ...newClass,
                 grade: parseInt(newClass.grade, 10), 
@@ -43,7 +41,6 @@ const ClassesList = () => {
         if (!confirmDelete) return; 
 
         try {
-            console.log("Silinen Sınıf Adı:", classId);
             await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classes?classId=${classId}`, {
                 method: 'DELETE',
             });
