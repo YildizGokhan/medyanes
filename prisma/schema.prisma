@@ -1,0 +1,325 @@
+// Model Güncellendiğinde yapılacaklar:
+// 1-" npx prisma generate " bunu terminale yaz (enter!)
+// 2- VS Codu kapatıp yeniden aç.
+// ! Sırayla yaparsan gücelleme gerçekleşir.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  role      String
+  name      String
+  surname   String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AllUser {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  role      String
+  name      String
+  surname   String
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ForgotPassword {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  secretKey String   @unique
+  validTime Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerifyEmail {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  secretKey String   @unique
+  validTime Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Teacher {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  verified    Boolean  @default(false)
+  role        Role     @default(teacher)
+  name        String
+  surname     String
+  phone       String   @unique
+  city        String
+  town        String
+  schooltype  String
+  schollName  String
+  classNumber String
+  email       String   @unique
+  password    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model GeneralTopPageBanner {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  startBannerTime String?
+  endBannerTime   String?
+  mainText        String?
+  detailText      String?
+  buttonLink      String?
+  buttonText      String?
+
+  isActive        Boolean
+  mainTextColor   String
+  underTextColor  String
+  buttonColor     String
+  backgroundColor String
+  buttonTextColor String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model dataUpdateChecker {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  Configdata String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Class {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  grade     Int
+  section   String
+  students  Student[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Student {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  surname     String
+  email       String  @unique
+  password    String
+  role        Role    @default(student)
+  verified    Boolean @default(false)
+  phone       String  @unique
+  city        String
+  town        String
+  schooltype  String
+  schollName  String
+  classNumber String
+  class       Class?  @relation(fields: [classId], references: [id])
+  classId     String? @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  student
+  teacher
+  admin
+}
+
+// Home Page Model 
+
+model HomeBgColor {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  pageId   String   @unique
+  bgColor  String
+}
+
+model HomeTextColor {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  pageId   String   @unique
+  TextColor  String
+}
+
+
+model HomeInfo {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title                  String
+  desc1                  String
+  desc2                  String
+  classCoursesTitle1     String
+  classCoursesTitle2     String
+  classCoursesDesc1      String
+  classCoursesDesc2      String
+  learnersStudentsTitle1 String
+  learnersStudentsTitle2 String
+  learnersStudentsDesc   String
+  featuredTitle1         String
+  featuredTitle2         String
+  video                  String
+  videoTitle1            String
+  videoTitle2            String
+  videoTitle3            String
+  videoTitle4            String
+  videoDesc1             String
+  videoDesc2             String
+  videoDesc3             String
+  instructorsTitle1      String
+  instructorsTitle2      String
+  instructorsDesc        String
+  clientTitle1           String
+  clientTitle2           String
+  clientDesc             String
+  bannerTitle1           String
+  bannerTitle2           String
+  beInstractorTitle1     String
+  beInstractorTitle2     String
+  beInstractorDesc       String
+  blogTitle1             String
+  blogTitle2             String
+  blogDesc               String
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model HomeInformation {
+   id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  icon        String
+  title       String
+  description String
+  color       String
+}
+
+model HomePosition{
+ id          String    @id @default(auto()) @map("_id") @db.ObjectId
+ pageId      String   @unique
+ position    String
+}
+
+model HomeButton{
+ id           String    @id @default(auto()) @map("_id") @db.ObjectId
+ pageId       String   
+ title        String
+ color        String
+ addressLink  String
+ textColor    String
+ hoverColor   String
+}
+
+
+model HomeCoursesCard {
+   id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  quantity   Int
+  icon       String
+  border     String
+  background String
+  boxBackground String
+  boxBorder  String
+  extraField String
+}
+
+model HomeContact {
+   id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  phone   String
+  mapUrl  String
+  address String
+}
+
+model HomeCategories {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+}
+
+model HomeMenus {
+   id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  address   String
+  items Json[]
+}
+
+model HomeFeatured {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  name       String
+  image      String
+  price      String
+  star       Int
+  topDesc    String
+  students   Int
+  lessons    Int
+}
+
+model HomeInstructors {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  image   String
+  job     String
+  course  Int
+  student Int
+}
+
+model HomeClients {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  image   String
+  comment String
+  star    Int
+}
+
+model HomeBlog {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  image String
+  date  String
+  role  String
+  by    String
+}
+
+model HomeLogoBanner {
+    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  logo String
+  link String
+}
+
+model HomeResources {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  label String
+}
+
+model HomeFooterCourses {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  label String
+}
+
+model HomeImage {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  logo         String
+  mainSection  String
+  underline    String
+  pencil       String
+  wave         String
+  star         String
+  book         String
+  redCrown     String
+  purpleCrown  String
+  halfCricle   String
+  dots         String
+  greyWave     String
+  studentPhoto String
+  crown        String
+  moreDots     String
+  videoCover   String
+  beInstractor String
+  graduation   String
+  banner       String
+  bannerShape  String
+  beinstractor String
+}
