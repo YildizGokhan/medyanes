@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     const classes = await prisma.class.findMany({
       include: {
         students: true,
-      },
+      }, 
     });
     res.status(200).json(classes);
   } else if (req.method === "POST") {
